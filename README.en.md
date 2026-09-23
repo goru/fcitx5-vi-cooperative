@@ -97,7 +97,14 @@ $ fcitx5 -r -d # or restart it from the tray icon
 
 If you want this to keep working on subsequent logins, set this environment variable somewhere that is read before fcitx5 starts (e.g. `~/.xprofile`).
 
+## Configuration
+
+The keys that turn off the IME default to Escape and Ctrl+[. You can add or change these from "Vi cooperative mode" in fcitx5-configtool.
+
+The configuration is saved to `~/.config/fcitx5/conf/vicooperative.conf`.
+
 ## Troubleshooting
 
 - You see `Could not locate library libvicooperative.so ...` → `FCITX_ADDON_DIRS` is not set, or the path is wrong.
 - The addon loads, but nothing happens when you press Escape → the current input method does not start with `keyboard-` (check with `fcitx5-remote -n`).
+- A key you configured doesn't seem to work → after saving in fcitx5-configtool, you may need to restart fcitx5 (`fcitx5 -r -d`).

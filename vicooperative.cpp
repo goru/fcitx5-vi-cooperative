@@ -4,13 +4,18 @@
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputpanel.h>
 #include <fcitx/instance.h>
+#include <fcitx-config/iniparser.h>
 #include <fcitx-utils/key.h>
+
+#include "vicooperativeconfig.h"
 
 namespace fcitx {
 
 class ViCooperative final : public AddonInstance {
 public:
     explicit ViCooperative(Instance *instance) : instance_(instance) {
+        reloadConfig();
+
         // Registering at PostInputMethod (rather than the default) makes
         // this handler run AFTER the active input method engine's own key
         // processing, so the engine gets first refusal on Escape.
@@ -33,7 +38,7 @@ public:
                 if (instance_->inputMethod(ic).starts_with("keyboard-")) {
                     return;
                 }
-                if (!keyEvent.key().checkKeyList(viEscapeKeys_)) {
+                if (!keyEvent.key().checkKeyList(*config_.escapeKeys)) {
                     return;
                 }
                 // If input method already consumed this key (e.g. to cancel an
@@ -51,9 +56,18 @@ public:
             });
     }
 
+    const Configuration *getConfig() const override { return &config_; }
+    void setConfig(const RawConfig &config) override {
+        config_.load(config, true);
+        safeSaveAsIni(config_, "conf/vicooperative.conf");
+    }
+    void reloadConfig() override {
+        readAsIni(config_, "conf/vicooperative.conf");
+    }
+
 private:
     Instance *instance_;
-    KeyList viEscapeKeys_{Key("Escape"), Key("Control+bracketleft")};
+    ViCooperativeConfig config_;
     std::unique_ptr<HandlerTableEntry<EventHandler>> handler_;
 };
 

@@ -78,7 +78,6 @@ sudo make install-system
 
 fcitx5標準のディレクトリにインストールされるのでfcitx5を再起動すれば認識され有効になります。
 
-
 ## 起動
 
 `make install` でホームディレクトリ以下にインストールした場合、fcitx5は自動的に検索しないので環境変数を設定する必要があります。 `make install-system` でシステムにインストールした場合はこの手順は不要です。既に起動しているfcitx5のトレイアイコンを右クリックして再起動してください。
@@ -98,7 +97,14 @@ $ fcitx5 -r -d #もしくはトレイアイコンから再起動
 
 次回起動時からも有効にする場合はこの環境変数をfcitx5が起動される前に読み込まれる場所 ( `~/.xprofile` 等) で設定してください。
 
+## 設定
+
+IMEをOFFにするキーはESCとCtrl+[がデフォルトとして設定されています。これはfcitx5-configtoolの「Vi cooperative mode」から追加・変更できます。
+
+設定は `~/.config/fcitx5/conf/vicooperative.conf` に保存されます。
+
 ## トラブルシューティング
 
 - `Could not locate library libvicooperative.so ...` と出る → `FCITX_ADDON_DIRS` の設定漏れ、またはパスの誤り。
 - アドオンはロードされるがESCを押しても何も起きない → 現在の入力メソッドが `keyboard-`で始まっていない ( `fcitx5-remote -n` で確認)
+- 設定したはずのキーが効かない → fcitx5-configtoolで保存後、fcitx5の再起動 ( `fcitx5 -r -d` ) が必要な場合があります

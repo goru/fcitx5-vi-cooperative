@@ -10,7 +10,7 @@ LIBDIR             := $(shell pkg-config --variable=libdir Fcitx5Core)
 SYSTEM_ADDON_LIB_DIR  := $(LIBDIR)/fcitx5
 SYSTEM_ADDON_CONF_DIR := $(PREFIX)/share/fcitx5/addon
 
-libvicooperative.so: vicooperative.cpp
+libvicooperative.so: vicooperative.cpp vicooperativeconfig.h
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $<
 
 # User-level install: no root required, but needs FCITX_ADDON_DIRS set
